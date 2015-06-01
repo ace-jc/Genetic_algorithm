@@ -3,12 +3,16 @@
 
 #define ARRAY_SQUARE_SIZE 10
 #define GENE_LENGTH 243
+#define ROBBY_AMT 2
 
 using namespace std;
 
 class Robby{
 private:
     int genes[GENE_LENGTH]; // array containing the 243 genes
+    int current_horizontal;
+    int current_vertical;
+    int gene_read_position;
     // genes are defined as follows:
     // 0 is move north
     // 1 is move south
@@ -21,6 +25,23 @@ private:
 public:
     Robby(){
         initial_create_genes();
+        current_horizontal = 0;
+        current_vertical = 0;
+        gene_read_position = 0;
+    }
+
+    int read_gene(){
+        int temp = genes[gene_read_position];
+        gene_read_position++; // increasing the position of the gene reader
+        return temp;
+    }
+
+    int horizontal_position(){
+        return current_horizontal;
+    }
+
+    int vertical_position(){
+        return current_vertical;
     }
 
     void initial_create_genes(){
@@ -62,6 +83,7 @@ public:
 class World{
 private:
     Items world_map_ptr[ARRAY_SQUARE_SIZE][ARRAY_SQUARE_SIZE];
+    Robby list_of_robbies[ROBBY_AMT];
 
     void add_cans(int cans_to_add){
         for(int can=0; can<cans_to_add; can++){
@@ -91,6 +113,16 @@ public:
         }
     }
 
+    void tick_time(){
+        // moving time forward
+        int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
+
+        for(int i=0; i<array_size; i++){
+            int hori = list_of_robbies[i].horizontal_position();
+            int vert = list_of_robbies[i].vertical_position();
+            int current_gene = list_of_robbies[i].read_gene();
+        }
+    }
 
 };
 
@@ -109,6 +141,9 @@ int main()
 
     World *world_ptr = new World(can_num);
     world_ptr->print_world();
+
+    world_ptr->tick_time();
+
 
     delete world_ptr;
     return 0;
