@@ -3,7 +3,8 @@
 
 #define ARRAY_SQUARE_SIZE 10
 #define GENE_LENGTH 243
-#define ROBBY_AMT 2
+#define ROBBY_AMT 1
+#define CLEANING_SESSIONS 100 // per Robby
 
 using namespace std;
 
@@ -31,9 +32,9 @@ public:
     }
 
     int read_gene(){
-        int temp = genes[gene_read_position];
+        int current_gene = genes[gene_read_position];
         gene_read_position++; // increasing the position of the gene reader
-        return temp;
+        return current_gene;
     }
 
     int horizontal_position(){
@@ -118,13 +119,22 @@ public:
         int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
 
         for(int i=0; i<array_size; i++){
-            int hori = list_of_robbies[i].horizontal_position();
-            int vert = list_of_robbies[i].vertical_position();
-            int current_gene = list_of_robbies[i].read_gene();
+            // for each Robby position
+            for(int j=0; j<CLEANING_SESSIONS; j++){
+                // all of the cleaning sessions per Robby
+                int hori = list_of_robbies[i].horizontal_position();
+                int vert = list_of_robbies[i].vertical_position();
+                int current_gene = list_of_robbies[i].read_gene();
+
+                cout << "i: " << i << " current_gene: " << current_gene << endl;
+            }
+
+
         }
     }
 
 };
+
 
 int main()
 {
@@ -135,14 +145,15 @@ int main()
             << ")" << endl;
        cin >> can_num;
     }while(can_num > ARRAY_SQUARE_SIZE*ARRAY_SQUARE_SIZE);
-
-
     cout << endl;
 
     World *world_ptr = new World(can_num);
     world_ptr->print_world();
 
-    world_ptr->tick_time();
+    for(int i=0; i<GENE_LENGTH; i++){
+        world_ptr->tick_time();
+    }
+
 
 
     delete world_ptr;
