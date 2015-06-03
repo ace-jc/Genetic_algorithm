@@ -6,7 +6,7 @@
 #define GENE_LENGTH 243
 #define ROBBY_AMT 1
 #define CLEANING_SESSIONS 100 // per Robby
-#define SITUATIONS_ACTIONS
+#define SITUATIONS_ACTIONS 6
 
 using namespace std;
 
@@ -34,9 +34,18 @@ public:
 
     void set_up_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
-            for(int j=0; j<SITUATIONS_ACTIONS-1; j++)
-                situation_table_and_genes[i][j] == 'r';
+            for(int j=0; j<SITUATIONS_ACTIONS; j++){
+                situation_table_and_genes[1][1] = 'r';
+            }
+        }
+    }
+
+    void print_situation_table(){
+        for(int i=0; i<GENE_LENGTH; i++){
+            for(int j=0; j<SITUATIONS_ACTIONS; j++){
+                cout << "HERE!!" << endl;
                 cout << situation_table_and_genes[i][j];
+            }
         }
         cout << endl;
     }
@@ -75,7 +84,7 @@ public:
 
 class World{
 private:
-
+    Items world_map_ptr[ARRAY_SQUARE_SIZE][ARRAY_SQUARE_SIZE];
     Robby list_of_robbies[ROBBY_AMT];
 
     void add_cans_and_walls(int cans_to_add){
@@ -102,7 +111,8 @@ private:
 
 public:
     World(int cans){
-        add_cans_and_walls(cans);
+        add_cans_and_walls(cans); // creating world
+        setup_robbies_situation_table(); // setting up the situation table
     }
 
     void print_world(){
@@ -111,6 +121,19 @@ public:
                 cout << world_map_ptr[i][j].item_state();
             }
             cout << endl;
+        }
+    }
+
+    void setup_robbies_situation_table(){
+        for(int i=0; i<GENE_LENGTH; i++){
+            list_of_robbies[i].set_up_situation_table();
+        }
+    }
+
+    void print_robbies(){
+        for(int i=0; i<ROBBY_AMT; i++){
+            cout << "Robby num: " << i << endl;
+            list_of_robbies[i].print_situation_table();
         }
     }
 
@@ -150,6 +173,7 @@ int main()
 
     World *world_ptr = new World(can_num);
     world_ptr->print_world();
+    world_ptr->print_robbies();
 
     for(int i=0; i<GENE_LENGTH; i++){
         world_ptr->tick_time();
