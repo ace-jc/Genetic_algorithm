@@ -30,12 +30,28 @@ public:
         current_horizontal = 1; // to avoid wall at 0
         current_vertical = 1; // to avoid wall at 0
         set_up_situation_table();
+//        situation_table_and_genes[1][1] = 'e';
     }
 
     void set_up_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
             for(int j=0; j<SITUATIONS_ACTIONS; j++){
-                situation_table_and_genes[1][1] = 'r';
+                if(j==4){
+                    // setting all values in column current
+                    if(i%3 == 0){
+                        situation_table_and_genes[i][j] = 'e';
+                    }
+                    else if(i%3 == 1){
+                        situation_table_and_genes[i][j] = 'c';
+                    }
+                    else if(i%3 == 2){
+                        situation_table_and_genes[i][j] = 'w';
+                    }
+                }
+                if(j==3){
+                    // setting all values in west
+
+                }
             }
         }
     }
@@ -43,11 +59,11 @@ public:
     void print_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
             for(int j=0; j<SITUATIONS_ACTIONS; j++){
-                cout << "HERE!!" << endl;
+//                cout << "HERE!!" << endl;
                 cout << situation_table_and_genes[i][j];
             }
+            cout << endl;
         }
-        cout << endl;
     }
 
     int horizontal_position(){
@@ -112,7 +128,7 @@ private:
 public:
     World(int cans){
         add_cans_and_walls(cans); // creating world
-        setup_robbies_situation_table(); // setting up the situation table
+//        setup_robbies_situation_table(); // setting up the situation table
     }
 
     void print_world(){
@@ -124,11 +140,11 @@ public:
         }
     }
 
-    void setup_robbies_situation_table(){
-        for(int i=0; i<GENE_LENGTH; i++){
-            list_of_robbies[i].set_up_situation_table();
-        }
-    }
+//    void setup_robbies_situation_table(){
+//        for(int i=0; i<GENE_LENGTH; i++){
+//            list_of_robbies[i].set_up_situation_table();
+//        }
+//    }
 
     void print_robbies(){
         for(int i=0; i<ROBBY_AMT; i++){
