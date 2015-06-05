@@ -17,14 +17,7 @@ private:
     int current_horizontal;
     int current_vertical;
 
-    // gene actions are defined as follows:
-    // 0 is move north
-    // 1 is move south
-    // 2 is move east
-    // 3 is move west
-    // 4 is choose random location to move in
-    // 5 is stay put
-    // 6 is bend down and get can
+
 
 public:
     Robby(){
@@ -41,8 +34,20 @@ public:
 
     void set_up_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
-
             for(int j=0; j<SITUATIONS_ACTIONS; j++){
+                if(j==5){
+                    // random gene area
+                    // setting 0-6 in ascii char
+                    situation_table_and_genes[i][j] = (char)((rand()%7)+48);
+                    // gene actions are defined as follows:
+                    // 0 is move north
+                    // 1 is move south
+                    // 2 is move east
+                    // 3 is move west
+                    // 4 is stay put
+                    // 5 is pickup
+                    // 6 is choose random move
+                }
                 if(j==4){
                     // setting all values in column current
                     if(i%3 == 0){
@@ -140,7 +145,6 @@ public:
     void print_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
             for(int j=0; j<SITUATIONS_ACTIONS; j++){
-//                cout << "HERE!!" << endl;
                 cout << situation_table_and_genes[i][j];
             }
             cout << endl;
@@ -220,12 +224,6 @@ public:
             cout << endl;
         }
     }
-
-//    void setup_robbies_situation_table(){
-//        for(int i=0; i<GENE_LENGTH; i++){
-//            list_of_robbies[i].set_up_situation_table();
-//        }
-//    }
 
     void print_robbies(){
         for(int i=0; i<ROBBY_AMT; i++){
