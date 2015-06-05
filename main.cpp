@@ -7,6 +7,7 @@
 #define ROBBY_AMT 1
 #define CLEANING_SESSIONS 100 // per Robby
 #define SITUATIONS_ACTIONS 6
+#define CANS_COUNT 50
 
 using namespace std;
 
@@ -33,8 +34,14 @@ public:
 //        situation_table_and_genes[1][1] = 'e';
     }
 
+    bool set_w_current = false;
+    char west_setting = 'e'; // letter used to help set west column
+    char east_setting = 'e'; // letter used to help set west column
+    int east_w_count = 0;
+
     void set_up_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
+
             for(int j=0; j<SITUATIONS_ACTIONS; j++){
                 if(j==4){
                     // setting all values in column current
@@ -46,11 +53,85 @@ public:
                     }
                     else if(i%3 == 2){
                         situation_table_and_genes[i][j] = 'w';
+                        set_w_current = true;
                     }
                 }
                 if(j==3){
-                    // setting all values in west
-
+                    // setting all values in West
+                    if(set_w_current){
+                        if(west_setting == 'e'){
+                            west_setting = 'c';
+                        }
+                        else if(west_setting == 'c'){
+                            west_setting = 'w';
+                        }
+                        else if(west_setting == 'w'){
+                            west_setting = 'e';
+                        }
+                        set_w_current = false;
+                    }
+                    situation_table_and_genes[i][j] = west_setting;
+                    if(west_setting == 'w'){
+                        east_w_count++; // helping east calculate three total w's in west
+                    }
+                }
+                if(j==2){
+                    // setting all values in East
+                    if(east_w_count == 3){
+                        if(east_setting == 'e'){
+                            east_setting = 'c';
+                        }
+                        else if(east_setting == 'c'){
+                            east_setting = 'w';
+                        }
+                        else if(east_setting == 'w'){
+                            east_setting = 'e';
+                        }
+                        east_w_count = 0;
+                    }
+                    situation_table_and_genes[i][j] = east_setting;
+                }
+                if(j==1){
+                    // setting all values in South
+                    if(i<27){
+                        situation_table_and_genes[i][j] = 'e';
+                    }
+                    else if(i>=27 && i<54){
+                        situation_table_and_genes[i][j] = 'c';
+                    }
+                    else if(i>=54 && i<81){
+                        situation_table_and_genes[i][j] = 'w';
+                    }
+                    else if(i>=81 && i<108){
+                        situation_table_and_genes[i][j] = 'e';
+                    }
+                    else if(i>=108 && i<135){
+                        situation_table_and_genes[i][j] = 'c';
+                    }
+                    else if(i>=135 && i<162){
+                        situation_table_and_genes[i][j] = 'w';
+                    }
+                    else if(i>=162 && i<189){
+                        situation_table_and_genes[i][j] = 'e';
+                    }
+                    else if(i>=189 && i<216){
+                        situation_table_and_genes[i][j] = 'c';
+                    }
+                    else if(i>=216 && i<243){
+                        situation_table_and_genes[i][j] = 'w';
+                    }
+                }
+                if(j==0){
+                    // setting all values in North
+                    if(i<81){
+                        situation_table_and_genes[i][j] = 'e';
+                    }
+                    else if(i>=81 && i<162){
+                        situation_table_and_genes[i][j] = 'c';
+                    }
+                    else if(i>=162 && i<243){
+                        situation_table_and_genes[i][j] = 'w';
+                    }
                 }
             }
         }
@@ -178,15 +259,7 @@ public:
 int main()
 {
     srand(time(0));
-    int can_num = 0;
-    cout << "Array Square Size: " << ARRAY_SQUARE_SIZE << endl;
-    do{
-       cout << "Cans to add? (must be less than " << ARRAY_SQUARE_SIZE*ARRAY_SQUARE_SIZE+1
-            << ")" << endl;
-       cin >> can_num;
-    }while(can_num > ARRAY_SQUARE_SIZE*ARRAY_SQUARE_SIZE);
-    cout << endl;
-
+    int can_num = CANS_COUNT;
     World *world_ptr = new World(can_num);
     world_ptr->print_world();
     world_ptr->print_robbies();
