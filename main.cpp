@@ -16,8 +16,7 @@ private:
     char situation_table_and_genes[GENE_LENGTH][SITUATIONS_ACTIONS]; // array containing the 243 situations and genes
     int current_horizontal;
     int current_vertical;
-
-
+    int fitness_level;
 
 public:
     Robby(){
@@ -31,6 +30,11 @@ public:
     char west_setting = 'e'; // letter used to help set west column
     char east_setting = 'e'; // letter used to help set west column
     int east_w_count = 0;
+
+    void reset_postion_to_home(){
+        this->current_horizontal = 1;
+        this->current_vertical = 1;
+    }
 
     void set_up_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
@@ -142,6 +146,23 @@ public:
         }
     }
 
+    int horizontal_position(){
+        return current_horizontal;
+    }
+
+    int vertical_position(){
+        return current_vertical;
+    }
+
+    int situation_table_lookup(char north, char south, char east, char west, char current){
+//        for(int i=0; i<GENE_LENGTH; i++){
+//            for(int j=0; j<SITUATIONS_ACTIONS; j++){
+//                cout << situation_table_and_genes[i][j];
+//            }
+//            cout << endl;
+//        }
+    }
+
     void print_situation_table(){
         for(int i=0; i<GENE_LENGTH; i++){
             for(int j=0; j<SITUATIONS_ACTIONS; j++){
@@ -149,14 +170,6 @@ public:
             }
             cout << endl;
         }
-    }
-
-    int horizontal_position(){
-        return current_horizontal;
-    }
-
-    int vertical_position(){
-        return current_vertical;
     }
 
 };
@@ -186,7 +199,7 @@ public:
 class World{
 private:
     Items world_map_ptr[ARRAY_SQUARE_SIZE][ARRAY_SQUARE_SIZE];
-    Robby list_of_robbies[ROBBY_AMT];
+    Robby this_robby;
 
     void add_cans_and_walls(int cans_to_add){
         // adding walls
@@ -213,7 +226,7 @@ private:
 public:
     World(int cans){
         add_cans_and_walls(cans); // creating world
-//        setup_robbies_situation_table(); // setting up the situation table
+
     }
 
     void print_world(){
@@ -223,32 +236,32 @@ public:
             }
             cout << endl;
         }
+        cout << endl;
     }
 
-    void print_robbies(){
+    void print_robby(){
         for(int i=0; i<ROBBY_AMT; i++){
             cout << "Robby num: " << i << endl;
-            list_of_robbies[i].print_situation_table();
+            this_robby.print_situation_table();
         }
+        cout << endl;
     }
 
-    void tick_time(){
+    void robby_step(){
         // moving time forward
-        int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
+        int horizontal = this_robby.horizontal_position();
+        int vertical = this_robby.vertical_position();
 
-//        for(int i=0; i<array_size; i++){
-//            // for each Robby position
-//            for(int j=0; j<CLEANING_SESSIONS; j++){
-//                // all of the cleaning sessions per Robby
-//                int hori = list_of_robbies[i].horizontal_position();
-//                int vert = list_of_robbies[i].vertical_position();
-//                int current_gene = list_of_robbies[i].read_gene();
-//
-////                cout << "i: " << i << " current_gene: " << current_gene << endl;
-//            }
-//
-//
-//        }
+        char north = world_map_ptr[horizontal][vertical-1].item_state();
+        char south = world_map_ptr[horizontal][vertical+1].item_state();
+        char east = world_map_ptr[horizontal+1][vertical].item_state();
+        char west = world_map_ptr[horizontal-1][vertical].item_state();
+        char current = world_map_ptr[horizontal][vertical].item_state();
+
+        int robby_action = this_robby.situation_table_lookup(north, south, east, west, current);
+
+
+
     }
 
 };
@@ -259,14 +272,14 @@ int main()
     srand(time(0));
     int can_num = CANS_COUNT;
     World *world_ptr = new World(can_num);
+
     world_ptr->print_world();
-    world_ptr->print_robbies();
+    world_ptr->print_robby();
 
-    for(int i=0; i<GENE_LENGTH; i++){
-        world_ptr->tick_time();
-    }
+    world_ptr->robby_step();
 
-
+    // later size of worlds
+//    int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
 
     delete world_ptr;
     return 0;
