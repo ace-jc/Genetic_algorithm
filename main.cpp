@@ -155,12 +155,27 @@ public:
     }
 
     int situation_table_lookup(char north, char south, char east, char west, char current){
-//        for(int i=0; i<GENE_LENGTH; i++){
-//            for(int j=0; j<SITUATIONS_ACTIONS; j++){
-//                cout << situation_table_and_genes[i][j];
-//            }
-//            cout << endl;
-//        }
+        // Using situation table to return the associated action
+        for(int i=0; i<GENE_LENGTH; i++){
+//            cout << "north: " << north << endl;
+//            cout << "south: " << south << endl;
+//            cout << "east: " << east << endl;
+//            cout << "west: " << west << endl;
+//            cout << "current: " << current << endl;
+
+            if(situation_table_and_genes[i][0] == north &&
+               situation_table_and_genes[i][1] == south &&
+               situation_table_and_genes[i][2] == east &&
+               situation_table_and_genes[i][3] == west &&
+               situation_table_and_genes[i][4] == current){
+
+                cout << "situation_table_and_genes[i][0]:" << situation_table_and_genes[i][0] << endl;
+                cout << "situation_table_and_genes[i][1]:" << situation_table_and_genes[i][1] << endl;
+                cout << "situation_table_and_genes[i][2]:" << situation_table_and_genes[i][2] << endl;
+                cout << "situation_table_and_genes[i][3]:" << situation_table_and_genes[i][3] << endl;
+                cout << "situation_table_and_genes[i][4]:" << situation_table_and_genes[i][4] << endl;
+            }
+        }
     }
 
     void print_situation_table(){
@@ -180,7 +195,7 @@ private:
 
 public:
     Items(){
-        state = '.'; // is empty
+        state = 'e'; // is empty
     }
 
     char item_state(){
@@ -218,7 +233,7 @@ private:
             do{
                 horizontal = rand()%ARRAY_SQUARE_SIZE;
                 vertical = rand()%ARRAY_SQUARE_SIZE;
-            }while(world_map_ptr[horizontal][vertical].item_state() != '.');
+            }while(world_map_ptr[horizontal][vertical].item_state() != 'e');
             world_map_ptr[horizontal][vertical].create_can();
         }
     }
