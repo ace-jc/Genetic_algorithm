@@ -169,11 +169,12 @@ public:
                situation_table_and_genes[i][3] == west &&
                situation_table_and_genes[i][4] == current){
 
-                cout << "situation_table_and_genes[i][0]:" << situation_table_and_genes[i][0] << endl;
-                cout << "situation_table_and_genes[i][1]:" << situation_table_and_genes[i][1] << endl;
-                cout << "situation_table_and_genes[i][2]:" << situation_table_and_genes[i][2] << endl;
-                cout << "situation_table_and_genes[i][3]:" << situation_table_and_genes[i][3] << endl;
-                cout << "situation_table_and_genes[i][4]:" << situation_table_and_genes[i][4] << endl;
+//                cout << "situation_table_and_genes[i][0]:" << situation_table_and_genes[i][0] << endl;
+//                cout << "situation_table_and_genes[i][1]:" << situation_table_and_genes[i][1] << endl;
+//                cout << "situation_table_and_genes[i][2]:" << situation_table_and_genes[i][2] << endl;
+//                cout << "situation_table_and_genes[i][3]:" << situation_table_and_genes[i][3] << endl;
+//                cout << "situation_table_and_genes[i][4]:" << situation_table_and_genes[i][4] << endl;
+                return (int)(situation_table_and_genes[i][5] - 48); // converting char to int
             }
         }
     }
@@ -274,7 +275,6 @@ public:
         char current = world_map_ptr[horizontal][vertical].item_state();
 
         int robby_action = this_robby.situation_table_lookup(north, south, east, west, current);
-
 
 
     }
