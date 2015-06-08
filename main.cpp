@@ -5,7 +5,8 @@
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
 #define ROBBY_AMT 1
-#define CLEANING_SESSIONS 100 // per Robby
+//#define CLEANING_SESSIONS 100 // per Robby
+#define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
 
@@ -30,6 +31,16 @@ public:
     char west_setting = 'e'; // letter used to help set west column
     char east_setting = 'e'; // letter used to help set west column
     int east_w_count = 0;
+
+    void found_can(){
+        // found can, worth 10 points
+        this->fitness_level += 10;
+    }
+
+    void can_does_not_exist(){
+        // tried to pickup a non-existent can
+        this->fitness_level--;
+    }
 
     void move_north(){
         this->current_vertical -= 1;
@@ -235,6 +246,10 @@ public:
     void create_wall(){
         this->state = 'w';
     }
+
+    void remove_can(){
+        this->state = 'e';
+    }
 };
 
 class World{
@@ -289,72 +304,106 @@ public:
     }
 
     void robby_step(){
-        // moving time forward
-        int horizontal = this_robby.horizontal_position();
-        int vertical = this_robby.vertical_position();
 
-        char north = world_map_ptr[horizontal][vertical-1].item_state();
-        char south = world_map_ptr[horizontal][vertical+1].item_state();
-        char east = world_map_ptr[horizontal+1][vertical].item_state();
-        char west = world_map_ptr[horizontal-1][vertical].item_state();
-        char current = world_map_ptr[horizontal][vertical].item_state();
+        int rounds = ACTIONS_PER_SESSION;
 
-        // returning action given the movement criteria
-        int robby_action = this_robby.situation_table_lookup(north, south, east, west, current);
-        cout << "robby_action: " << robby_action << endl;
+        while(rounds){
+            // moving time forward
+            int horizontal = this_robby.horizontal_position();
+            int vertical = this_robby.vertical_position();
 
-        if(robby_action == 6){
-            robby_action = rand()%4;
+            char north = world_map_ptr[horizontal][vertical-1].item_state();
+            char south = world_map_ptr[horizontal][vertical+1].item_state();
+            char east = world_map_ptr[horizontal+1][vertical].item_state();
+            char west = world_map_ptr[horizontal-1][vertical].item_state();
+            char current = world_map_ptr[horizontal][vertical].item_state();
+
+            // returning action given the movement criteria
+            int robby_action = this_robby.situation_table_lookup(north, south, east, west, current);
+
+            if(robby_action == 6){
+                robby_action = rand()%4;
+                cout << "rand: " << robby_action << endl;
+            }
+
+            cout << "robby_action: " << robby_action << endl;
+
+            // gene actions are defined as follows:
+            // 0 is move north
+            // 1 is move south
+            // 2 is move east
+            // 3 is move west
+            // 4 is stay put
+            // 5 is pickup
+            // 6 is choose random move
+
+
+
+            if(robby_action == 0){
+                // will attempt to move north
+                if(north == 'w'){
+                    //hit a wall and stays in current position
+                    this_robby.hit_wall();
+                }
+                else{
+                    // did not hit wall
+                    this_robby.move_north();
+                }
+            }
+            else if(robby_action == 1){
+                // will attempt to move south
+                if(south == 'w'){
+                    //hit a wall and stays in current position
+                    this_robby.hit_wall();
+                }
+                else{
+                    // did not hit wall
+                    this_robby.move_south();
+                }
+            }
+            else if(robby_action == 2){
+                // will attempt to move east
+                if(east == 'w'){
+                    //hit a wall and stays in current position
+                    this_robby.hit_wall();
+                }
+                else{
+                    // did not hit wall
+                    this_robby.move_east();
+                }
+            }
+            else if(robby_action == 3){
+                // will attempt to move west
+                if(west == 'w'){
+                    //hit a wall and stays in current position
+                    this_robby.hit_wall();
+                }
+                else{
+                    // did not hit wall
+                    this_robby.move_west();
+                }
+            }
+            else if(robby_action == 5){
+                if(world_map_ptr[horizontal][vertical].item_state() == 'c'){
+                    // trying to pickup a can and it exists
+                    this_robby.found_can();
+                    world_map_ptr[horizontal][vertical].remove_can();
+                }
+                else{
+                    // can did not exist when trying to pick it up
+                    this_robby.can_does_not_exist();
+                }
+            }
+
+            cout << "this_robby.current_fitness(): " << this_robby.current_fitness() << endl;
+            cout << "current hor: " << this_robby.horizontal_position() << endl;
+            cout << "current ver: " << this_robby.vertical_position() << endl;
+            cout << endl;
+
+            rounds--;
         }
 
-        if(robby_action == 0){
-            // will attempt to move north
-            if(north == 'w'){
-                //hit a wall and stays in current position
-                this_robby.hit_wall();
-            }
-            else{
-                // did not hit wall
-                this_robby.move_north();
-            }
-        }
-        else if(robby_action == 1){
-            // will attempt to move south
-            if(south == 'w'){
-                //hit a wall and stays in current position
-                this_robby.hit_wall();
-            }
-            else{
-                // did not hit wall
-                this_robby.move_south();
-            }
-        }
-        else if(robby_action == 2){
-            // will attempt to move east
-            if(east == 'w'){
-                //hit a wall and stays in current position
-                this_robby.hit_wall();
-            }
-            else{
-                // did not hit wall
-                this_robby.move_east();
-            }
-        }
-        else if(robby_action == 3){
-            // will attempt to move west
-            if(west == 'w'){
-                //hit a wall and stays in current position
-                this_robby.hit_wall();
-            }
-            else{
-                // did not hit wall
-                this_robby.move_west();
-            }
-        }
 
-        cout << "this_robby.current_fitness(): " << this_robby.current_fitness() << endl;
-        cout << "current hor: " << this_robby.horizontal_position() << endl;
-        cout << "current ver: " << this_robby.vertical_position() << endl;
     }
 
 };
@@ -368,8 +417,9 @@ int main()
 
     world_ptr->print_world();
     world_ptr->print_robby();
-
     world_ptr->robby_step();
+
+
 
     // later size of worlds
 //    int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
