@@ -23,7 +23,7 @@ public:
         current_horizontal = 1; // to avoid wall at 0
         current_vertical = 1; // to avoid wall at 0
         set_up_situation_table();
-//        situation_table_and_genes[1][1] = 'e';
+        fitness_level = 0;
     }
 
     bool set_w_current = false;
@@ -31,9 +31,34 @@ public:
     char east_setting = 'e'; // letter used to help set west column
     int east_w_count = 0;
 
+    void move_north(){
+        this->current_vertical -= 1;
+    }
+
+    void move_south(){
+        this->current_vertical += 1;
+    }
+
+    void move_east(){
+        this->current_horizontal += 1;
+    }
+
+    void move_west(){
+        this->current_horizontal -= 1;
+    }
+
+
+    void hit_wall(){
+        this->fitness_level -= 5;
+    }
+
     void reset_postion_to_home(){
         this->current_horizontal = 1;
         this->current_vertical = 1;
+    }
+
+    int current_fitness(){
+        return this->fitness_level;
     }
 
     void set_up_situation_table(){
@@ -274,9 +299,62 @@ public:
         char west = world_map_ptr[horizontal-1][vertical].item_state();
         char current = world_map_ptr[horizontal][vertical].item_state();
 
+        // returning action given the movement criteria
         int robby_action = this_robby.situation_table_lookup(north, south, east, west, current);
+        cout << "robby_action: " << robby_action << endl;
 
+        if(robby_action == 6){
+            robby_action = rand()%4;
+        }
 
+        if(robby_action == 0){
+            // will attempt to move north
+            if(north == 'w'){
+                //hit a wall and stays in current position
+                this_robby.hit_wall();
+            }
+            else{
+                // did not hit wall
+                this_robby.move_north();
+            }
+        }
+        else if(robby_action == 1){
+            // will attempt to move south
+            if(south == 'w'){
+                //hit a wall and stays in current position
+                this_robby.hit_wall();
+            }
+            else{
+                // did not hit wall
+                this_robby.move_south();
+            }
+        }
+        else if(robby_action == 2){
+            // will attempt to move east
+            if(east == 'w'){
+                //hit a wall and stays in current position
+                this_robby.hit_wall();
+            }
+            else{
+                // did not hit wall
+                this_robby.move_east();
+            }
+        }
+        else if(robby_action == 3){
+            // will attempt to move west
+            if(west == 'w'){
+                //hit a wall and stays in current position
+                this_robby.hit_wall();
+            }
+            else{
+                // did not hit wall
+                this_robby.move_west();
+            }
+        }
+
+        cout << "this_robby.current_fitness(): " << this_robby.current_fitness() << endl;
+        cout << "current hor: " << this_robby.horizontal_position() << endl;
+        cout << "current ver: " << this_robby.vertical_position() << endl;
     }
 
 };
