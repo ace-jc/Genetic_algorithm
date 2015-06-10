@@ -10,6 +10,7 @@
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
+#define EVOLUTION_ARRAY_SIZE 5
 
 using namespace std;
 
@@ -415,10 +416,10 @@ int main()
 {
     srand(time(0));
     int can_num = CANS_COUNT;
-    vector<World *> world_array;
-    vector<World *>::iterator it = world_array.begin();
-    vector<World *> sorted_worlds;
-    vector<World *>::iterator it_sorted = sorted_worlds.begin();
+    vector<World*> world_array;
+    vector<World*>::iterator it = world_array.begin();
+    World* sort_array[EVOLUTION_ARRAY_SIZE];
+    int position = 0;
 
     for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
         // creating amount of world and robby combinations
@@ -435,29 +436,37 @@ int main()
 //        cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
 
-    for(it = world_array.begin(); it != world_array.end(); it++){
-        // ensuring something exists in sorted worlds vector
-        if(sorted_worlds.size() == 0){
-                sorted_worlds.push_back(*it);
-            }
 
-        for(it_sorted = sorted_worlds.begin(); it_sorted != sorted_worlds.end(); it_sorted++){
-            // something exists in sorted world
-            if((*it)->robby_fitness() >= (*it_sorted)->robby_fitness()){
-                cout << (*it)->robby_fitness() << " >= " << (*it_sorted)->robby_fitness() << endl;
-//                sorted_worlds
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        sort_array[position] = *it;
+        position++;
+        if(position == EVOLUTION_ARRAY_SIZE){
+            break;
+        }
+    }
+
+
+    for(int i=EVOLUTION_ARRAY_SIZE-1; i<WORLDS_ROBBY_COMBINATIONS; i++){
+        // looping over the remainder of the world array items
+        for(int j=0; j<EVOLUTION_ARRAY_SIZE; j++){
+            // looping over each of the sorted array items
+            if(world_array.at(i)->robby_fitness() > (*sort_array[j]).robby_fitness()){
+                sort_array[j] = world_array.at(i); // smash the current smaller value
             }
         }
-
     }
 
-    for(it_sorted = sorted_worlds.begin(); it_sorted != sorted_worlds.end(); it_sorted++){
-        // print
-        cout << "fitness: " << (*it_sorted)->robby_fitness() << endl;
+    for(int i=0; i<EVOLUTION_ARRAY_SIZE; i++){
+        cout << "in sorted array: " << sort_array[i]->robby_fitness() << endl;
     }
 
-    cout << endl << endl << endl << "check" << endl;
 
+//    cout << endl << endl << "check" << endl;
+//    for(int i=4; i<10; i++){
+//        cout << "fitness: " << world_array.at(i)->robby_fitness() << endl;
+//    }
+
+    cout << endl << endl << "check 222" << endl;
     for(it = world_array.begin(); it != world_array.end(); it++){
         cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
