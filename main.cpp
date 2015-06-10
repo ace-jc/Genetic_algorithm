@@ -1,11 +1,12 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
 #define ROBBY_AMT 1
-//#define CLEANING_SESSIONS 100 // per Robby
+#define WORLDS_ROBBY_COMBINATIONS 10
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
@@ -323,10 +324,10 @@ public:
 
             if(robby_action == 6){
                 robby_action = rand()%4;
-                cout << "rand: " << robby_action << endl;
+//                cout << "rand: " << robby_action << endl;
             }
 
-            cout << "robby_action: " << robby_action << endl;
+//            cout << "robby_action: " << robby_action << endl;
 
             // gene actions are defined as follows:
             // 0 is move north
@@ -336,9 +337,6 @@ public:
             // 4 is stay put
             // 5 is pickup
             // 6 is choose random move
-
-
-
             if(robby_action == 0){
                 // will attempt to move north
                 if(north == 'w'){
@@ -395,10 +393,10 @@ public:
                 }
             }
 
-            cout << "this_robby.current_fitness(): " << this_robby.current_fitness() << endl;
-            cout << "current hor: " << this_robby.horizontal_position() << endl;
-            cout << "current ver: " << this_robby.vertical_position() << endl;
-            cout << endl;
+//            cout << "this_robby.current_fitness(): " << this_robby.current_fitness() << endl;
+//            cout << "current hor: " << this_robby.horizontal_position() << endl;
+//            cout << "current ver: " << this_robby.vertical_position() << endl;
+//            cout << endl;
 
             rounds--;
         }
@@ -406,6 +404,10 @@ public:
 
     }
 
+    int robby_fitness(){
+        // returns this robby fitness level
+        return this_robby.current_fitness();
+    }
 };
 
 
@@ -413,17 +415,57 @@ int main()
 {
     srand(time(0));
     int can_num = CANS_COUNT;
-    World *world_ptr = new World(can_num);
+    vector<World *> world_array;
+    vector<World *>::iterator it = world_array.begin();
+    vector<World *> sorted_worlds;
+    vector<World *>::iterator it_sorted = sorted_worlds.begin();
 
-    world_ptr->print_world();
-    world_ptr->print_robby();
-    world_ptr->robby_step();
+    for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
+        // creating amount of world and robby combinations
+        world_array.push_back(new World(can_num));
 
+//        World *world_ptr = new World(can_num);
+//        world_ptr->robby_step();
+//        cout << "robby_fitness: " << world_ptr->robby_fitness() << endl;
+    }
+
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        // iterating over all world robby combinations and creating fitness level
+        (*it)->robby_step();
+//        cout << "fitness: " << (*it)->robby_fitness() << endl;
+    }
+
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        // ensuring something exists in sorted worlds vector
+        if(sorted_worlds.size() == 0){
+                sorted_worlds.push_back(*it);
+            }
+
+        for(it_sorted = sorted_worlds.begin(); it_sorted != sorted_worlds.end(); it_sorted++){
+            // something exists in sorted world
+            if((*it)->robby_fitness() >= (*it_sorted)->robby_fitness()){
+                cout << (*it)->robby_fitness() << " >= " << (*it_sorted)->robby_fitness() << endl;
+//                sorted_worlds
+            }
+        }
+
+    }
+
+    for(it_sorted = sorted_worlds.begin(); it_sorted != sorted_worlds.end(); it_sorted++){
+        // print
+        cout << "fitness: " << (*it_sorted)->robby_fitness() << endl;
+    }
+
+    cout << endl << endl << endl << "check" << endl;
+
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        cout << "fitness: " << (*it)->robby_fitness() << endl;
+    }
 
 
     // later size of worlds
 //    int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
 
-    delete world_ptr;
+//    delete world_ptr;
     return 0;
 }
