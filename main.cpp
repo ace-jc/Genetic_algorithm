@@ -325,10 +325,7 @@ public:
 
             if(robby_action == 6){
                 robby_action = rand()%4;
-//                cout << "rand: " << robby_action << endl;
             }
-
-//            cout << "robby_action: " << robby_action << endl;
 
             // gene actions are defined as follows:
             // 0 is move north
@@ -394,11 +391,6 @@ public:
                 }
             }
 
-//            cout << "this_robby.current_fitness(): " << this_robby.current_fitness() << endl;
-//            cout << "current hor: " << this_robby.horizontal_position() << endl;
-//            cout << "current ver: " << this_robby.vertical_position() << endl;
-//            cout << endl;
-
             rounds--;
         }
 
@@ -424,16 +416,12 @@ int main()
     for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
         // creating amount of world and robby combinations
         world_array.push_back(new World(can_num));
-
-//        World *world_ptr = new World(can_num);
-//        world_ptr->robby_step();
-//        cout << "robby_fitness: " << world_ptr->robby_fitness() << endl;
     }
 
     for(it = world_array.begin(); it != world_array.end(); it++){
         // iterating over all world robby combinations and creating fitness level
+        // using robby_step method
         (*it)->robby_step();
-//        cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
 
 
@@ -444,7 +432,6 @@ int main()
             break;
         }
     }
-
 
     for(int i=EVOLUTION_ARRAY_SIZE; i<WORLDS_ROBBY_COMBINATIONS; i++){
         // looping over the remainder of the world array items
@@ -467,10 +454,5 @@ int main()
         cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
 
-
-    // later size of worlds
-//    int array_size = (sizeof(list_of_robbies)/ sizeof(list_of_robbies[0]));
-
-//    delete world_ptr;
     return 0;
 }
