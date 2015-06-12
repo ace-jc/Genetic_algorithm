@@ -80,7 +80,7 @@ public:
                 if(j==5){
                     // random gene area
                     // setting 0-6 in ascii char
-                    situation_table_and_genes[i][j] = (char)((rand()%7)+48);
+                    situation_table_and_genes[i][j] = (char)((rand()%7)+48); //+48 due to ascii storage
                     // gene actions are defined as follows:
                     // 0 is move north
                     // 1 is move south
