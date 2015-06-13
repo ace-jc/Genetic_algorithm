@@ -6,11 +6,11 @@
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
 #define ROBBY_AMT 1
-#define WORLDS_ROBBY_COMBINATIONS 200
+#define WORLDS_ROBBY_COMBINATIONS 10
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
-#define EVOLUTION_ARRAY_SIZE 20
+#define EVOLUTION_ARRAY_SIZE 5
 
 using namespace std;
 
@@ -422,21 +422,14 @@ int main()
         }
     }
 
-    for(int i=EVOLUTION_ARRAY_SIZE; i<WORLDS_ROBBY_COMBINATIONS; i++){
-        // looping over the remainder of the world array items
-        for(int j=0; j<EVOLUTION_ARRAY_SIZE; j++){
-            // looping over each of the sorted array items
-            if(world_array.at(i)->robby_fitness() > (*sort_array[j]).robby_fitness()){
-                sort_array[j] = world_array.at(i); // smash the current smaller value
-                break;
-            }
+    bool sorted = false;
+    while(!sorted){
+        for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
+
         }
     }
 
-    cout << endl << endl << "check sorted sample" << endl;
-    for(int i=0; i<EVOLUTION_ARRAY_SIZE; i++){
-        cout << "in sorted array: " << sort_array[i]->robby_fitness() << endl;
-    }
+
 
     cout << endl << endl << "check world sample" << endl;
     for(it = world_array.begin(); it != world_array.end(); it++){
