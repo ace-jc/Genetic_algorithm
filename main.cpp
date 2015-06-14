@@ -399,7 +399,7 @@ int main()
     int can_num = CANS_COUNT;
     vector<World*> world_array;
     vector<World*>::iterator it = world_array.begin();
-    World* sort_array[EVOLUTION_ARRAY_SIZE];
+    vector<World*>::iterator iter = world_array.begin();
     int position = 0;
 
     for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
@@ -414,19 +414,19 @@ int main()
     }
 
 
-    for(it = world_array.begin(); it != world_array.end(); it++){
-        sort_array[position] = *it;
-        position++;
-        if(position == EVOLUTION_ARRAY_SIZE){
-            break;
-        }
-    }
+    int counter = 1;//WORLDS_ROBBY_COMBINATIONS;
+    while(counter){
 
-    bool sorted = false;
-    while(!sorted){
-        for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
-
+        for(it = world_array.begin(),(iter = world_array.begin())++; iter != world_array.end() || it != world_array.end(); it++, iter++){
+            // move over all of the items in the array
+            if(iter == world_array.end()){
+                break;
+            }
+            cout << (*it)->robby_fitness() << " iter is: " << (*iter)->robby_fitness() << endl;
+//            compare_values();
+            cout << endl << endl;
         }
+        counter--;
     }
 
 
