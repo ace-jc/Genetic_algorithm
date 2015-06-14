@@ -414,17 +414,24 @@ int main()
     }
 
 
-    int counter = 1;//WORLDS_ROBBY_COMBINATIONS;
-    while(counter){
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        cout << "fitness: " << (*it)->robby_fitness() << endl;
+    }
+    cout << endl << endl << "check world sample" << endl;
 
+
+    int counter = WORLDS_ROBBY_COMBINATIONS;
+    while(counter){
         for(it = world_array.begin(),(iter = world_array.begin())++; iter != world_array.end() || it != world_array.end(); it++, iter++){
-            // move over all of the items in the array
+            // move over all of the items in the array and the one after it for comparison
             if(iter == world_array.end()){
                 break;
             }
-            cout << (*it)->robby_fitness() << " iter is: " << (*iter)->robby_fitness() << endl;
-//            compare_values();
-            cout << endl << endl;
+            if((*it)->robby_fitness() < (*iter)->robby_fitness()){
+                World* temp = (*it);
+                (*it) = (*iter);
+                (*iter) = temp;
+            }
         }
         counter--;
     }
