@@ -6,11 +6,10 @@
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
 #define ROBBY_AMT 1
-#define WORLDS_ROBBY_COMBINATIONS 10
+#define WORLDS_ROBBY_COMBINATIONS 100
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
-#define EVOLUTION_ARRAY_SIZE 5
 
 using namespace std;
 
@@ -402,24 +401,25 @@ int main()
     vector<World*>::iterator iter = world_array.begin();
     int position = 0;
 
+    /*creating amount of world and robby combinations*/
     for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
-        // creating amount of world and robby combinations
         world_array.push_back(new World(can_num));
     }
 
+    /* iterating over all world robby combinations and creating fitness level
+         using robby_step method*/
     for(it = world_array.begin(); it != world_array.end(); it++){
-        // iterating over all world robby combinations and creating fitness level
-        // using robby_step method
         (*it)->robby_step();
     }
 
+//    /* print world sample before*/
+//    for(it = world_array.begin(); it != world_array.end(); it++){
+//        cout << "fitness: " << (*it)->robby_fitness() << endl;
+//    }
+//    cout << endl << endl << "check world sample" << endl;
 
-    for(it = world_array.begin(); it != world_array.end(); it++){
-        cout << "fitness: " << (*it)->robby_fitness() << endl;
-    }
-    cout << endl << endl << "check world sample" << endl;
 
-
+    /* Sorting world/robby combinations to have the highest first*/
     int counter = WORLDS_ROBBY_COMBINATIONS;
     while(counter){
         for(it = world_array.begin(),(iter = world_array.begin())++; iter != world_array.end() || it != world_array.end(); it++, iter++){
@@ -436,12 +436,26 @@ int main()
         counter--;
     }
 
-
-
+    /* print world sample after*/
     cout << endl << endl << "check world sample" << endl;
     for(it = world_array.begin(); it != world_array.end(); it++){
         cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
+
+    int robby_count = 0;
+    for(it = world_array.begin(); it != world_array.end(); it++, robby_count++){
+        if(robby_count >= 20){
+            world_array.erase(it);
+        }
+    }
+
+//         print world sample after
+    cout << endl << endl << "check world sample only with 20%" << endl;
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        cout << "fitness: " << (*it)->robby_fitness() << endl;
+    }
+
+
 
     return 0;
 }
