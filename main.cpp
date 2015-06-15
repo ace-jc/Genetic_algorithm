@@ -392,6 +392,14 @@ public:
 };
 
 
+void erase_world_robby_bottom(vector<World*>* world_array){
+    /* erasing the bottom 80% of the world array*/
+    int amt_keep = WORLDS_ROBBY_COMBINATIONS/5;
+    world_array->erase(world_array->begin()+amt_keep, world_array->end());
+
+}
+
+
 int main()
 {
     srand(time(0));
@@ -442,9 +450,8 @@ int main()
         cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
 
-    /* erasing the bottom 80% of the world array*/
-    int amt_keep = WORLDS_ROBBY_COMBINATIONS/5;
-    world_array.erase(world_array.begin()+amt_keep, world_array.end());
+
+    erase_world_robby_bottom(&world_array);
 
 //         print world sample after
     cout << endl << endl << "check world sample only with 20%" << endl;
@@ -452,7 +459,7 @@ int main()
         cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
 
-
-
     return 0;
 }
+
+
