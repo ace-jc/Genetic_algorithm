@@ -442,12 +442,9 @@ int main()
         cout << "fitness: " << (*it)->robby_fitness() << endl;
     }
 
-    int robby_count = 0;
-    for(it = world_array.begin(); it != world_array.end(); it++, robby_count++){
-        if(robby_count >= 20){
-            world_array.erase(it);
-        }
-    }
+    /* erasing the bottom 80% of the world array*/
+    int amt_keep = WORLDS_ROBBY_COMBINATIONS/5;
+    world_array.erase(world_array.begin()+amt_keep, world_array.end());
 
 //         print world sample after
     cout << endl << endl << "check world sample only with 20%" << endl;
