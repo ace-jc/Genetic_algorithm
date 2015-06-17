@@ -276,6 +276,10 @@ public:
 
     }
 
+    void mate(Robby new_robby){
+//        int gene_cutoff = rand()%GENE_LENGTH;
+    }
+
     void print_world(){
         for(int i=0; i<ARRAY_SQUARE_SIZE; i++){
             for(int j=0; j<ARRAY_SQUARE_SIZE; j++){
@@ -452,6 +456,29 @@ int main()
     cout << endl << endl << "check world sample only with 20%" << endl;
     for(it = world_array.begin(); it != world_array.end(); it++){
         cout << "fitness: " << (*it)->robby_fitness() << endl;
+    }
+
+
+    /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
+    for(int i=0; i<20; i++){
+//        cout << "i value: " << i << endl;
+        for(int j=0; j<5; j++){
+            // mating with random 5 robbies
+            int robby_num = 0;
+            do{
+                robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
+                World* new_robby = new World(can_num);
+                world_array.push_back(new_robby); // adding one world/robby to the world_array
+                world_array.at(i)->mate(new_robby); // mating new_robby with current robby
+            }while(robby_num == i); // can't be itself
+//            cout << "robby_num: " << robby_num << endl;
+        }
+    }
+
+
+    cout << endl << endl << "final end check world sample" << endl;
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        cout << " fitness: " << (*it)->robby_fitness() << endl;
     }
 
     return 0;
