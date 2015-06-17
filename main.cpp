@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 class Robby{
 private:
     char situation_table_and_genes[GENE_LENGTH][SITUATIONS_ACTIONS]; // array containing the 243 situations and genes
@@ -419,12 +420,6 @@ int main()
     for(it = world_array.begin(); it != world_array.end(); it++){
         (*it)->robby_step();
     }
-
-//    /* print world sample before*/
-//    for(it = world_array.begin(); it != world_array.end(); it++){
-//        cout << "fitness: " << (*it)->robby_fitness() << endl;
-//    }
-//    cout << endl << endl << "check world sample" << endl;
 
 
     /* Sorting world/robby combinations to have the highest first*/
