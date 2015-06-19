@@ -11,6 +11,7 @@
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
+#define LOOPS 10000
 
 using namespace std;
 
@@ -35,14 +36,12 @@ public:
     char east_setting = 'e'; // letter used to help set west column
     int east_w_count = 0;
 
-    string gene_from(int cutoff){
-        string output;
+    char gene_from(int gene_to_return){
+        return situation_table_and_genes[gene_to_return][5];
+    }
 
-        for(int i=cutoff; i<GENE_LENGTH; i++){
-            output += situation_table_and_genes[][]
-        }
-
-        return output;
+    void gene_change(int gene_location, char gene_to_insert){
+        this->situation_table_and_genes[gene_location][5] = gene_to_insert;
     }
 
     void found_can(){
@@ -289,8 +288,22 @@ public:
 
     /* Will mix genes with the incoming new robby*/
     void mate(World* new_world_robby){
-        int gene_cutoff = rand()%GENE_LENGTH; // random gene cut off 0 - 242
-        string incoming_genes = new_world_robby->inner_robby->gene_from(gene_cutoff);
+//        int gene_cutoff = rand()%GENE_LENGTH; // random gene cut off 0 - 242. It is healthy gene to keep onward.
+        string healthy_genes;
+//        incoming_genes = new_world_robby->inner_robby().gene_from(gene_cutoff);
+
+        for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
+            // binary rand will either keep current random
+            // value already created or insert from top 20 mate.
+            int temp_num = rand()%2;
+            if(temp_num){
+                // adding from top 20
+                new_world_robby->inner_robby().gene_change(gene_position ,this->inner_robby().gene_from(gene_position));
+            }
+
+        }
+
+//        healthy_genes = this->inner_robby().gene_from(gene_cutoff); // gene from i inside of top 20 candidate
     }
 
     Robby inner_robby(){
@@ -492,6 +505,97 @@ int main()
         }
     }
 
+    /* iterating over all world robby combinations and creating fitness level
+     using robby_step method*/
+    for(it = world_array.begin(); it != world_array.end(); it++){
+        (*it)->robby_step();
+    }
+
+    /* Sorting world/robby combinations to have the highest first*/
+    counter = WORLDS_ROBBY_COMBINATIONS;
+    while(counter){
+        for(it = world_array.begin(),(iter = world_array.begin())++; iter != world_array.end() || it != world_array.end(); it++, iter++){
+            // move over all of the items in the array and the one after it for comparison
+            if(iter == world_array.end()){
+                break;
+            }
+            if((*it)->robby_fitness() < (*iter)->robby_fitness()){
+                World* temp = (*it);
+                (*it) = (*iter);
+                (*iter) = temp;
+            }
+        }
+        counter--;
+    }
+
+    for(int i=0; i<LOOPS; i++){
+
+//        cout << endl << "FITNESS TO NEW POPULATION, loop: " << i+1 << endl;
+
+//        cout << "SORTING" << endl;
+
+        /* print world sample after*/
+//        cout << "check world sample:" << endl;
+//        for(it = world_array.begin(); it != world_array.end(); it++){
+//            cout << "fitness: " << (*it)->robby_fitness() << endl;
+//        }
+
+
+//        cout << "REMOVING BOTTOM 20%" << endl;
+        erase_world_robby_bottom(&world_array);
+
+        //         print world sample after
+//        cout << "check world sample only with 20%" << endl;
+//        for(it = world_array.begin(); it != world_array.end(); it++){
+//            cout << "fitness: " << (*it)->robby_fitness() << endl;
+//        }
+
+//        cout << "MATING" << endl;
+
+        /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
+        for(int i=0; i<20; i++){
+    //        cout << "i value: " << i << endl;
+            for(int j=0; j<5; j++){
+                // mating with random 5 robbies
+                int robby_num = 0;
+                do{
+                    robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
+                    World* new_world_robby = new World(can_num);
+                    world_array.push_back(new_world_robby); // adding one world/robby to the world_array
+                    world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
+                }while(robby_num == i); // can't be itself
+    //            cout << "robby_num: " << robby_num << endl;
+            }
+        }
+
+//        cout << endl << endl << "final end check world sample" << endl;
+//        for(it = world_array.begin(); it != world_array.end(); it++){
+//            cout << " fitness: " << (*it)->robby_fitness() << endl;
+//        }
+
+        /* iterating over all world robby combinations and creating fitness level
+         using robby_step method*/
+        for(it = world_array.begin(); it != world_array.end(); it++){
+            (*it)->robby_step();
+        }
+
+        /* Sorting world/robby combinations to have the highest first*/
+        counter = WORLDS_ROBBY_COMBINATIONS;
+        while(counter){
+            for(it = world_array.begin(),(iter = world_array.begin())++; iter != world_array.end() || it != world_array.end(); it++, iter++){
+                // move over all of the items in the array and the one after it for comparison
+                if(iter == world_array.end()){
+                    break;
+                }
+                if((*it)->robby_fitness() < (*iter)->robby_fitness()){
+                    World* temp = (*it);
+                    (*it) = (*iter);
+                    (*iter) = temp;
+                }
+            }
+            counter--;
+        }
+    }
 
     cout << endl << endl << "final end check world sample" << endl;
     for(it = world_array.begin(); it != world_array.end(); it++){
