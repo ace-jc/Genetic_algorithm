@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
+#include <string>
 
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
@@ -33,6 +34,16 @@ public:
     char west_setting = 'e'; // letter used to help set west column
     char east_setting = 'e'; // letter used to help set west column
     int east_w_count = 0;
+
+    string gene_from(int cutoff){
+        string output;
+
+        for(int i=cutoff; i<GENE_LENGTH; i++){
+            output += situation_table_and_genes[][]
+        }
+
+        return output;
+    }
 
     void found_can(){
         // found can, worth 10 points
@@ -276,8 +287,14 @@ public:
 
     }
 
-    void mate(Robby new_robby){
-//        int gene_cutoff = rand()%GENE_LENGTH;
+    /* Will mix genes with the incoming new robby*/
+    void mate(World* new_world_robby){
+        int gene_cutoff = rand()%GENE_LENGTH; // random gene cut off 0 - 242
+        string incoming_genes = new_world_robby->inner_robby->gene_from(gene_cutoff);
+    }
+
+    Robby inner_robby(){
+        return this_robby;
     }
 
     void print_world(){
@@ -467,9 +484,9 @@ int main()
             int robby_num = 0;
             do{
                 robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
-                World* new_robby = new World(can_num);
-                world_array.push_back(new_robby); // adding one world/robby to the world_array
-                world_array.at(i)->mate(new_robby); // mating new_robby with current robby
+                World* new_world_robby = new World(can_num);
+                world_array.push_back(new_world_robby); // adding one world/robby to the world_array
+                world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
             }while(robby_num == i); // can't be itself
 //            cout << "robby_num: " << robby_num << endl;
         }
