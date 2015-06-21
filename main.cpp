@@ -529,32 +529,11 @@ int main()
     }
 
     for(int i=0; i<LOOPS; i++){
-
-//        cout << endl << "FITNESS TO NEW POPULATION, loop: " << i+1 << endl;
-
-//        cout << "SORTING" << endl;
-
-        /* print world sample after*/
-//        cout << "check world sample:" << endl;
-//        for(it = world_array.begin(); it != world_array.end(); it++){
-//            cout << "fitness: " << (*it)->robby_fitness() << endl;
-//        }
-
-
-//        cout << "REMOVING BOTTOM 20%" << endl;
+        /* removing bottom 20%*/
         erase_world_robby_bottom(&world_array);
-
-        //         print world sample after
-//        cout << "check world sample only with 20%" << endl;
-//        for(it = world_array.begin(); it != world_array.end(); it++){
-//            cout << "fitness: " << (*it)->robby_fitness() << endl;
-//        }
-
-//        cout << "MATING" << endl;
 
         /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
         for(int i=0; i<20; i++){
-    //        cout << "i value: " << i << endl;
             for(int j=0; j<5; j++){
                 // mating with random 5 robbies
                 int robby_num = 0;
@@ -564,14 +543,8 @@ int main()
                     world_array.push_back(new_world_robby); // adding one world/robby to the world_array
                     world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
                 }while(robby_num == i); // can't be itself
-    //            cout << "robby_num: " << robby_num << endl;
             }
         }
-
-//        cout << endl << endl << "final end check world sample" << endl;
-//        for(it = world_array.begin(); it != world_array.end(); it++){
-//            cout << " fitness: " << (*it)->robby_fitness() << endl;
-//        }
 
         /* iterating over all world robby combinations and creating fitness level
          using robby_step method*/
