@@ -287,21 +287,20 @@ public:
     }
 
     /* Will mix genes with the incoming new robby*/
-    void mate(World* survivor1, World* survivor2){
-//        int gene_cutoff = rand()%GENE_LENGTH; // random gene cut off 0 - 242. It is healthy gene to keep onward.
-//        string healthy_genes;
+    void mate(World* survivor_world1, World* survivor_world2){
 ////        incoming_genes = new_world_robby->inner_robby().gene_from(gene_cutoff);
 //
-//        for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
-//            // binary rand will either keep current random
-//            // value already created or insert from top 20 mate.
-//            int temp_num = rand()%2;
-//            if(temp_num){
-//                // adding from top 20
-//                new_world_robby->inner_robby().gene_change(gene_position ,this->inner_robby().gene_from(gene_position));
-//            }
-//
-//        }
+        for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
+            int random_num = rand()%2; // zero or one
+            if(random_num){
+                // grabbing gene from survivor1
+                this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
+            }
+            else{
+                // grabbing gene from survivor1
+                this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
+            }
+        }
 
 //        healthy_genes = this->inner_robby().gene_from(gene_cutoff); // gene from i inside of top 20 candidate
     }
@@ -549,8 +548,6 @@ int main()
             World* new_world_robby = new World(can_num);
             world_array.push_back(new_world_robby); // adding one world/robby to the world_array
             world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
-
-//            cout << "robby_num: " << robby_num << endl;
         }
     }
 
