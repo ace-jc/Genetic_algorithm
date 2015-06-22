@@ -11,7 +11,7 @@
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
-#define LOOPS 10000
+#define LOOPS 1000
 
 using namespace std;
 
@@ -497,10 +497,12 @@ int main()
             int robby_num = 0;
             do{
                 robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
-                World* new_world_robby = new World(can_num);
-                world_array.push_back(new_world_robby); // adding one world/robby to the world_array
-                world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
             }while(robby_num == i); // can't be itself
+
+            // robby at i and robby_num are different here
+            World* new_world_robby = new World(can_num);
+            world_array.push_back(new_world_robby); // adding one world/robby to the world_array
+            world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
 //            cout << "robby_num: " << robby_num << endl;
         }
     }
