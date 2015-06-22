@@ -287,21 +287,21 @@ public:
     }
 
     /* Will mix genes with the incoming new robby*/
-    void mate(World* new_world_robby){
+    void mate(World* survivor1, World* survivor2){
 //        int gene_cutoff = rand()%GENE_LENGTH; // random gene cut off 0 - 242. It is healthy gene to keep onward.
-        string healthy_genes;
-//        incoming_genes = new_world_robby->inner_robby().gene_from(gene_cutoff);
-
-        for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
-            // binary rand will either keep current random
-            // value already created or insert from top 20 mate.
-            int temp_num = rand()%2;
-            if(temp_num){
-                // adding from top 20
-                new_world_robby->inner_robby().gene_change(gene_position ,this->inner_robby().gene_from(gene_position));
-            }
-
-        }
+//        string healthy_genes;
+////        incoming_genes = new_world_robby->inner_robby().gene_from(gene_cutoff);
+//
+//        for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
+//            // binary rand will either keep current random
+//            // value already created or insert from top 20 mate.
+//            int temp_num = rand()%2;
+//            if(temp_num){
+//                // adding from top 20
+//                new_world_robby->inner_robby().gene_change(gene_position ,this->inner_robby().gene_from(gene_position));
+//            }
+//
+//        }
 
 //        healthy_genes = this->inner_robby().gene_from(gene_cutoff); // gene from i inside of top 20 candidate
     }
@@ -502,7 +502,8 @@ int main()
             // robby at i and robby_num are different here
             World* new_world_robby = new World(can_num);
             world_array.push_back(new_world_robby); // adding one world/robby to the world_array
-            world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
+            world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
+
 //            cout << "robby_num: " << robby_num << endl;
         }
     }
@@ -535,18 +536,23 @@ int main()
         erase_world_robby_bottom(&world_array);
 
         /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
-        for(int i=0; i<20; i++){
-            for(int j=0; j<5; j++){
-                // mating with random 5 robbies
-                int robby_num = 0;
-                do{
-                    robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
-                    World* new_world_robby = new World(can_num);
-                    world_array.push_back(new_world_robby); // adding one world/robby to the world_array
-                    world_array.at(i)->mate(new_world_robby); // mating new_world_robby with current robby
-                }while(robby_num == i); // can't be itself
-            }
+    for(int i=0; i<20; i++){
+//        cout << "i value: " << i << endl;
+        for(int j=0; j<5; j++){
+            // mating with random 5 robbies
+            int robby_num = 0;
+            do{
+                robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
+            }while(robby_num == i); // can't be itself
+
+            // robby at i and robby_num are different here
+            World* new_world_robby = new World(can_num);
+            world_array.push_back(new_world_robby); // adding one world/robby to the world_array
+            world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
+
+//            cout << "robby_num: " << robby_num << endl;
         }
+    }
 
         /* iterating over all world robby combinations and creating fitness level
          using robby_step method*/
