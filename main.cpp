@@ -11,7 +11,7 @@
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
-#define LOOPS 1000
+#define LOOPS 100
 
 using namespace std;
 
@@ -531,21 +531,21 @@ int main()
         erase_world_robby_bottom(&world_array);
 
         /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
-    for(int i=0; i<20; i++){
-//        cout << "i value: " << i << endl;
-        for(int j=0; j<5; j++){
-            // mating with random 5 robbies
-            int robby_num = 0;
-            do{
-                robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
-            }while(robby_num == i); // can't be itself
+        for(int i=0; i<20; i++){
+    //        cout << "i value: " << i << endl;
+            for(int j=0; j<5; j++){
+                // mating with random 5 robbies
+                int robby_num = 0;
+                do{
+                    robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
+                }while(robby_num == i); // can't be itself
 
-            // robby at i and robby_num are different here
-            World* new_world_robby = new World(can_num);
-            world_array.push_back(new_world_robby); // adding one world/robby to the world_array
-            world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
+                // robby at i and robby_num are different here
+                World* new_world_robby = new World(can_num);
+                world_array.push_back(new_world_robby); // adding one world/robby to the world_array
+                world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
+            }
         }
-    }
 
         /* iterating over all world robby combinations and creating fitness level
          using robby_step method*/
