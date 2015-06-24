@@ -10,8 +10,8 @@
 #define WORLDS_ROBBY_COMBINATIONS 100
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
-#define CANS_COUNT 50
-#define LOOPS 100
+#define CANS_COUNT 40
+#define LOOPS 1000
 
 using namespace std;
 
