@@ -11,7 +11,7 @@
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
-#define LOOPS 100
+#define LOOPS 1000
 
 using namespace std;
 
@@ -37,7 +37,15 @@ public:
     int east_w_count = 0;
 
     char gene_from(int gene_to_return){
-        return situation_table_and_genes[gene_to_return][5];
+        char output;
+        output = situation_table_and_genes[gene_to_return][5];
+
+        int random_mutation = rand()%100 + 1; //1 in 100 chance of mutation
+        if(random_mutation == 1){
+            output = (char)((rand()%7)+48); //+48 due to ascii storage
+        }
+
+        return output;
     }
 
     void gene_change(int gene_location, char gene_to_insert){
