@@ -485,13 +485,6 @@ int main()
 
     erase_world_robby_bottom(&world_array);
 
-//         print world sample after
-    cout << endl << endl << "check world sample only with 20%" << endl;
-    for(it = world_array.begin(); it != world_array.end(); it++){
-        cout << "fitness: " << (*it)->robby_fitness() << endl;
-    }
-
-
     /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
     for(int i=0; i<20; i++){
 //        cout << "i value: " << i << endl;
