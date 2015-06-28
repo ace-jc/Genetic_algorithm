@@ -297,19 +297,26 @@ public:
     /* Will mix genes with the incoming new robby*/
     void mate(World* survivor_world1, World* survivor_world2){
         for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
+            int random_num = 0;
             if(survivor_world1->robby_fitness() >= survivor_world2->robby_fitness()){
-                int random_num = rand()%5; // zero to four
-                if(random_num == 1)
-                    break; // one in four chance
-                // grabbing gene from survivor1
-                this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
+                random_num = rand()%5; // zero to four
+                if(random_num == 1){// one in four chance of grabbing lower one
+                    this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
+                }
+                else{
+                    // grabbing gene from survivor1
+                    this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
+                }
             }
             else if(survivor_world1->robby_fitness() < survivor_world2->robby_fitness()){
-                int random_num = rand()%5; // zero to four
-                if(random_num == 1)
-                    break; // one in four chance
-                // grabbing gene from survivor2
-                this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
+                random_num = rand()%5; // zero to four
+                if(random_num == 1){// one in four chance of grabbing lower one
+                    this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
+                }
+                else{
+                    // grabbing gene from survivor1
+                    this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
+                }
             }
         }
     }
