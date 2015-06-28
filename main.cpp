@@ -6,7 +6,6 @@
 
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
-#define ROBBY_AMT 1
 #define WORLDS_ROBBY_COMBINATIONS 100
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
@@ -323,14 +322,6 @@ public:
         cout << endl;
     }
 
-    void print_robby(){
-        for(int i=0; i<ROBBY_AMT; i++){
-            cout << "Robby num: " << i << endl;
-            this_robby.print_situation_table();
-        }
-        cout << endl;
-    }
-
     void robby_step(){
 
         int rounds = ACTIONS_PER_SESSION;
@@ -431,8 +422,8 @@ public:
 
 
 void erase_world_robby_bottom(vector<World*>* world_array){
-    /* erasing the bottom 80% of the world array*/
-    int amt_keep = WORLDS_ROBBY_COMBINATIONS/5;
+    /* erasing the bottom 50% of the world array*/
+    int amt_keep = WORLDS_ROBBY_COMBINATIONS/2;
     world_array->erase(world_array->begin()+amt_keep, world_array->end());
 
 }
@@ -486,9 +477,9 @@ int main()
     erase_world_robby_bottom(&world_array);
 
     /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
-    for(int i=0; i<20; i++){
+    for(int i=0; i<WORLDS_ROBBY_COMBINATIONS/2; i++){
 //        cout << "i value: " << i << endl;
-        for(int j=0; j<5; j++){
+        for(int j=0; j<2; j++){
             // mating with random 5 robbies
             int robby_num = 0;
             do{
@@ -532,9 +523,9 @@ int main()
         erase_world_robby_bottom(&world_array);
 
         /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
-        for(int i=0; i<20; i++){
+        for(int i=0; i<WORLDS_ROBBY_COMBINATIONS/2; i++){
     //        cout << "i value: " << i << endl;
-            for(int j=0; j<5; j++){
+            for(int j=0; j<2; j++){
                 // mating with random 5 robbies
                 int robby_num = 0;
                 do{
