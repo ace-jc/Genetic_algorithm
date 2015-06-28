@@ -297,15 +297,17 @@ public:
     /* Will mix genes with the incoming new robby*/
     void mate(World* survivor_world1, World* survivor_world2){
         for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
-            if(survivor_world1->robby_fitness() > survivor_world2->robby_fitness()){
+            if(survivor_world1->robby_fitness() >= survivor_world2->robby_fitness()){
                 int random_num = rand()%5; // zero to four
                 if(random_num == 1)
                     break; // one in four chance
                 // grabbing gene from survivor1
                 this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
             }
-            else{
-                int random_num2 = rand()%2; // zero or one
+            else if(survivor_world1->robby_fitness() < survivor_world2->robby_fitness()){
+                int random_num = rand()%5; // zero to four
+                if(random_num == 1)
+                    break; // one in four chance
                 // grabbing gene from survivor2
                 this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
             }
