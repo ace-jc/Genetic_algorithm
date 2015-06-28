@@ -6,11 +6,12 @@
 
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
-#define WORLDS_ROBBY_COMBINATIONS 100
+#define WORLDS_ROBBY_COMBINATIONS 100 // needs to be divisible by KEEP_TOP evenly
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 50
 #define LOOPS 1000
+#define KEEP_TOP 50
 
 using namespace std;
 
@@ -302,7 +303,7 @@ public:
                 this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
             }
             else{
-                // grabbing gene from survivor1
+                // grabbing gene from survivor2
                 this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
             }
         }
@@ -478,20 +479,24 @@ int main()
 
     /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
     for(int i=0; i<WORLDS_ROBBY_COMBINATIONS/2; i++){
-//        cout << "i value: " << i << endl;
-        for(int j=0; j<2; j++){
-            // mating with random 5 robbies
-            int robby_num = 0;
-            do{
-                robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
-            }while(robby_num == i); // can't be itself
+        /* removing bottom 50%*/
+        erase_world_robby_bottom(&world_array);
 
-            // robby at i and robby_num are different here
-            World* new_world_robby = new World(can_num);
-            world_array.push_back(new_world_robby); // adding one world/robby to the world_array
-            world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
+        /* will loop over the 50 fittest items and will mate will a random 5 robbies*/
+        for(int i=0; i<KEEP_TOP; i++){
+    //        cout << "i value: " << i << endl;
+            for(int j=0; j<WORLDS_ROBBY_COMBINATIONS/KEEP_TOP; j++){
+                // mating with random robbies
+                int robby_num = 0;
+                do{
+                    robby_num = rand()%KEEP_TOP; // selecting a mate from the top 50(0-49 in array)
+                }while(robby_num == i); // can't be itself
 
-//            cout << "robby_num: " << robby_num << endl;
+                // robby at i and robby_num are different here
+                World* new_world_robby = new World(can_num);
+                world_array.push_back(new_world_robby); // adding one world/robby to the world_array
+                world_array.back()->mate(world_array.at(i), world_array.at(robby_num)); // mating new_world_robby(which is at the end) with robby at i and robby_num.
+            }
         }
     }
 
@@ -519,17 +524,17 @@ int main()
     }
 
     for(int i=0; i<LOOPS; i++){
-        /* removing bottom 20%*/
+        /* removing bottom 50%*/
         erase_world_robby_bottom(&world_array);
 
-        /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
-        for(int i=0; i<WORLDS_ROBBY_COMBINATIONS/2; i++){
+        /* will loop over the 50 fittest items and will mate will a random 5 robbies*/
+        for(int i=0; i<KEEP_TOP; i++){
     //        cout << "i value: " << i << endl;
-            for(int j=0; j<2; j++){
-                // mating with random 5 robbies
+            for(int j=0; j<WORLDS_ROBBY_COMBINATIONS/KEEP_TOP; j++){
+                // mating with random robbies
                 int robby_num = 0;
                 do{
-                    robby_num = rand()%20; // selecting a mate from the top 20(0-19 in array)
+                    robby_num = rand()%KEEP_TOP; // selecting a mate from the top 50(0-49 in array)
                 }while(robby_num == i); // can't be itself
 
                 // robby at i and robby_num are different here
