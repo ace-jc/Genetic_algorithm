@@ -6,12 +6,12 @@
 
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
-#define WORLDS_ROBBY_COMBINATIONS 1000 // needs to be divisible by KEEP_TOP evenly
+#define WORLDS_ROBBY_COMBINATIONS 100 // needs to be divisible by KEEP_TOP evenly
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
-#define CANS_COUNT 50
+#define CANS_COUNT 20
 #define LOOPS 1000
-#define KEEP_TOP 50
+#define KEEP_TOP 25
 
 using namespace std;
 
