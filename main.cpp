@@ -299,8 +299,8 @@ public:
         for(int gene_position=0; gene_position<GENE_LENGTH; gene_position++){
             int random_num = 0;
             if(survivor_world1->robby_fitness() >= survivor_world2->robby_fitness()){
-                random_num = rand()%5; // zero to four
-                if(random_num == 1){// one in four chance of grabbing lower one
+                random_num = rand()%10; // zero to four
+                if(random_num == 1){// one in 20 chance of grabbing lower one
                     this->inner_robby().gene_change(gene_position, survivor_world2->inner_robby().gene_from(gene_position));
                 }
                 else{
@@ -309,7 +309,7 @@ public:
                 }
             }
             else if(survivor_world1->robby_fitness() < survivor_world2->robby_fitness()){
-                random_num = rand()%5; // zero to four
+                random_num = rand()%10; // zero to four
                 if(random_num == 1){// one in four chance of grabbing lower one
                     this->inner_robby().gene_change(gene_position, survivor_world1->inner_robby().gene_from(gene_position));
                 }
@@ -448,8 +448,8 @@ int main()
     int can_num = CANS_COUNT;
     vector<World*> world_array;
     vector<World*>::iterator it = world_array.begin();
-    vector<World*>::iterator iter = world_array.begin();
     int position = 0;
+    vector<World*>::iterator iter = world_array.begin();
 
     /*creating amount of world and robby combinations*/
     for(int i=0; i<WORLDS_ROBBY_COMBINATIONS; i++){
