@@ -11,7 +11,7 @@
 #define SITUATIONS_ACTIONS 6
 #define CANS_COUNT 20
 #define LOOPS 1000
-#define KEEP_TOP 25
+#define KEEP_TOP 20
 
 using namespace std;
 
