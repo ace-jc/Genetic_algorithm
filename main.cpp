@@ -9,7 +9,7 @@
 #define WORLDS_ROBBY_COMBINATIONS 100 // needs to be divisible by KEEP_TOP evenly
 #define ACTIONS_PER_SESSION 200
 #define SITUATIONS_ACTIONS 6
-#define CANS_COUNT 20
+#define CANS_COUNT 50
 #define LOOPS 1000
 #define KEEP_TOP 20
 
@@ -436,7 +436,7 @@ public:
 
 void erase_world_robby_bottom(vector<World*>* world_array){
     /* erasing the bottom 50% of the world array*/
-    int amt_keep = WORLDS_ROBBY_COMBINATIONS/2;
+    int amt_keep = WORLDS_ROBBY_COMBINATIONS/5;
     world_array->erase(world_array->begin()+amt_keep, world_array->end());
 
 }
@@ -494,14 +494,14 @@ int main()
         /* removing bottom 50%*/
         erase_world_robby_bottom(&world_array);
 
-        /* will loop over the 50 fittest items and will mate will a random 5 robbies*/
+        /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
         for(int i=0; i<KEEP_TOP; i++){
     //        cout << "i value: " << i << endl;
             for(int j=0; j<WORLDS_ROBBY_COMBINATIONS/KEEP_TOP; j++){
                 // mating with random robbies
                 int robby_num = 0;
                 do{
-                    robby_num = rand()%KEEP_TOP; // selecting a mate from the top 50(0-49 in array)
+                    robby_num = rand()%KEEP_TOP; // selecting a mate from the top 20(0-19 in array)
                 }while(robby_num == i); // can't be itself
 
                 // robby at i and robby_num are different here
@@ -539,7 +539,7 @@ int main()
         /* removing bottom 50%*/
         erase_world_robby_bottom(&world_array);
 
-        /* will loop over the 50 fittest items and will mate will a random 5 robbies*/
+        /* will loop over the 20 fittest items and will mate will a random 5 robbies*/
         for(int i=0; i<KEEP_TOP; i++){
     //        cout << "i value: " << i << endl;
             for(int j=0; j<WORLDS_ROBBY_COMBINATIONS/KEEP_TOP; j++){
