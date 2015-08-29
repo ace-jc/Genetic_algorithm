@@ -3,6 +3,7 @@
 #include <time.h>
 #include <vector>
 #include <string>
+#include "Items.h"
 
 #define ARRAY_SQUARE_SIZE 12 // without walls it is -2 in size
 #define GENE_LENGTH 243
@@ -16,7 +17,8 @@
 using namespace std;
 
 
-class Robby{
+class Robby
+{
 private:
     char situation_table_and_genes[GENE_LENGTH][SITUATIONS_ACTIONS]; // array containing the 243 situations and genes
     int current_horizontal;
@@ -235,33 +237,8 @@ public:
 
 };
 
-class Items{
-private:
-    char state;
-
-public:
-    Items(){
-        state = 'e'; // is empty
-    }
-
-    char item_state(){
-        return state;
-    }
-
-    void create_can(){
-        this->state = 'c';
-    }
-
-    void create_wall(){
-        this->state = 'w';
-    }
-
-    void remove_can(){
-        this->state = 'e';
-    }
-};
-
-class World{
+class World
+{
 private:
     Items world_map_ptr[ARRAY_SQUARE_SIZE][ARRAY_SQUARE_SIZE];
     Robby this_robby;
@@ -587,5 +564,3 @@ int main()
 
     return 0;
 }
-
-
