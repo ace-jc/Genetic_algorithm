@@ -4,7 +4,7 @@
 
 using namespace std;
 
-
+// Robby constructor
 Robby::Robby(){
     current_horizontal = 1; // to avoid wall at 0
     current_vertical = 1; // to avoid wall at 0
@@ -17,6 +17,9 @@ char west_setting = 'e'; // letter used to help set west column
 char east_setting = 'e'; // letter used to help set west column
 int east_w_count = 0;
 
+
+
+// member functions
 char Robby::gene_from(int gene_to_return){
     char output;
     output = situation_table_and_genes[gene_to_return][5];
