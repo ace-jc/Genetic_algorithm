@@ -7,10 +7,12 @@
 #include "Robby.h"
 #include "World.h"
 
+// Best to compile with c++11
+//g++ -std=c++11 main.cpp Items.cpp Robby.cpp World.cpp -o Genetic
 
 #define WORLDS_ROBBY_COMBINATIONS 100 // needs to be divisible by KEEP_TOP evenly
 #define CANS_COUNT 50
-#define LOOPS 1000
+#define LOOPS 500
 #define KEEP_TOP 20
 
 using namespace std;

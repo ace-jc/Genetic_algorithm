@@ -10,11 +10,8 @@ public:
     Items();
 
     char item_state();
-
     void create_can();
-
     void create_wall();
-
     void remove_can();
 };
 
