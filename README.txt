@@ -17,3 +17,5 @@ Points are scored as follows:
 CanFound += 10;
 PickUpNonExistentCan -= 1;
 HitWall -= 5;
+
+compile with: g++ -std=c++11 *.cpp -o Genetic
